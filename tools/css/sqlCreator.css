@@ -1,0 +1,88 @@
+/**
+ * author: hy
+ * decs: 辅助工具
+ * time: 2018/3/1
+ */
+body,div,a,span,button,textarea,input,h1,h2,h3,h4,h5,h6,ul,li{
+    margin: 0 0;
+    padding: 0 0;
+    font-family: "微软雅黑 Light", '微软雅黑';
+}
+textarea{
+    display: block;
+    margin: 10px auto;
+    border-color: #1c2b36;
+    border-radius: 4px;
+}
+ul {
+    list-style: none;
+}
+.title{
+    display: block;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 18px;
+    color: white;
+    background-color: #1c2b36;
+}
+.input {
+    position: absolute;
+    left: 0;
+    width: 35%;
+}
+.menu{
+    position: absolute;
+    z-index: 99;
+    left: 35%;
+    width: 10%;
+    min-width: 110px;
+    height: 100%;
+    background-color: #1c2b36;
+    color: #96abbb;
+}
+.menu a{
+    display: inline-block;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+.menu a:hover{
+    background-color: #40535E;
+    color: white;
+}
+.menu ul{
+    overflow: hidden;
+    height: 0;
+}
+.menu li{
+    margin-left: 5px;
+    height: 30px;
+    line-height: 20px;
+}
+.output{
+    position: absolute;
+    left: 45%;
+    width: 55%;
+}
+.tips{
+    position: absolute;
+    z-index: 1;
+    left: 55%;
+    top: -20px;
+    color: red;
+}
+/*  提示弹出动画 */
+@keyframes tip_anim {
+    0% { top: -20px; }
+    25% { top: 20px; }
+    75% { top: 20px; }
+    100% { top: -20px; }
+}
+@-webkit-keyframes tip_anim {
+    0% { top: -20px; }
+    25% { top: 20px; }
+    75% { top: 20px; }
+    100% { top: -20px; }
+}

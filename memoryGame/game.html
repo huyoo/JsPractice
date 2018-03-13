@@ -7,17 +7,30 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>WeGame</title>
     <link rel="stylesheet" href="h5.css">
+    <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div id="title" class="title">
-        <!--当前: 第<span>1</span>关-->
-        <!--得分: <span>0</span>-->
+    <div class="title">
+        第 <span id="level">--</span> 关
+        得分: <span id="score">--</span>
+        <br>
+        <span>
+            <img src="image/heart.png" alt="">
+            <img src="image/heart.png" alt="">
+            <img src="image/heart.png" alt="">
+        </span>
     </div>
-    <div id="content" class="xy content">
-        <!--<div>-->
-            <!--<img src="image/1_05.png" class="front">-->
-            <!--<img src="image/1_09.png" class="back">-->
-        <!--</div>-->
+    <div id="content" class="content container"></div>
+    <div class="curtain ">
+        <div class="center container">
+            <p class="curtain_title">开始游戏</p>
+            <i id="start" class="fa fa-play fa-3x" aria-hidden="true" title="开始游戏"></i>
+        </div>
+        <div class="center container hide">
+            <p class="curtain_title">游戏结束</p>
+            <i id="repeat" class="fa fa-repeat fa-3x" aria-hidden="true" title="再来一局"></i>
+            <i class="fa fa-list fa-3x" aria-hidden="true" title="历史记录"></i>
+        </div>
     </div>
 <script src="h5.js"></script>
 </body>

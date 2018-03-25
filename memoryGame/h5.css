@@ -46,7 +46,7 @@ ul {
     box-sizing: border-box;
 }
 .content div img:last-child{
-    /*z-index: -1;*/
+    z-index: -1;
     margin-top: -103%;
     float: left;
     top: 0;

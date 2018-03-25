@@ -24,6 +24,7 @@
             curtain: 0,//当前没有被找出的方块
         };
         this.waiting();
+        // console.log(this);
     };
 
     var proto = GameManager.prototype;
@@ -94,7 +95,7 @@
                 'style' : 'width:' + 100/parseInt(def.hard) +'%',
                 'id': i
             });
-            tool.addClass(node, 'rotate360');
+            // tool.addClass(node, 'rotate360');
             def.content.appendChild(node);
 
         }

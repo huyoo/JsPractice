@@ -1,5 +1,8 @@
 'use strict';
-
+/**
+ * 结束界面未完成
+ * 重新开始游戏时的监听事件判定
+ */
 (function (win, factory) {
     if (typeof define === 'function' && define.amd) {
         define('gameManager', factory);
@@ -17,23 +20,25 @@
             menu : tool.getDom('title'),
             start : tool.getDom('start'),
             repeat: tool.getDom('repeat'),
+            heart: tool.getDom('heart'),
             level: 1,
             data: null,
             score: 0,
             hard: 3,
             curtain: 0,//当前没有被找出的方块
+            wait: true
         };
         this.waiting();
-        // console.log(this);
     };
 
     var proto = GameManager.prototype;
+    proto.constructor = GameManager;
     /**
      * 等待游戏开始
      */
     proto.waiting = function () {
         var _this = this;
-       tool.addEvent(_this.def.start, 'click', function () {
+        tool.addEvent(_this.def.start, 'click', function () {
             tool.setAttr(_this.def.start.parentNode, { 'style' : 'display: none'});
             tool.setAttr(_this.def.start.parentNode.parentNode, { 'style' : 'display: none' });
             _this.init();
@@ -47,80 +52,122 @@
         def.data = this.getRandom(def.hard);
         def.curtain = def.hard;
         this.create(def, def.data);
-        def.level ===1 && this.addEvent(def);//事件委托后只生成一次监听程序
+        this.def.score || tool.addEvent(def.content, 'click', clickHandler(this));//添加监听
         this.score(def);
     };
 
     //得分管理
     proto.score = function () {
         var arg = arguments[0];
-        if(!arg && arg !== 0){ return; }
+        if(!arg && arg !== 0) return;
         var def = this.def;
         if (typeof arg === 'object'){
             arg.data.score = 0;
             arg.data.level = 1;
         }else if (!isNaN(arg)){
-             if(def.data[arg].isTarg){
-                 def.score += def.hard;
-                 --def.curtain;
-             }
+            if(def.data[arg].isTarg){
+                def.data[arg].isTarg = false;
+                def.score += def.hard;
+                --def.curtain;
+            }else {
+                var length = def.heart.children.length;
+                if (!length){
+                    this.end();
+                };
+                tool.removeDom(def.heart, length - 1);
+            }
         }
         tool.html(tool.getDom('level'), def.level);
         tool.html(tool.getDom('score'), def.score +'');
         this.data();
     };
+
     proto.data = function () {
         var def = this.def, _this = this;
         if (!def.curtain){
             if (def.hard === def.level)
                 ++def.hard;
             ++ def.level;
-            _this.remove();
+            setTimeout(function () {
+                _this.reset();
+            }, 800);
         }
     };
     //创建内容
     proto.create = function (def, data) {
         for(i = 0; i < data.length; i++){
-            var node = tool.createDom('div'),
-                img, attrVal = {};
-            for (var c = 0; c < 2; c++){
-                img = tool.createDom('img');
-                attrVal = !c ? { 'src' : 'image/1_05.png', 'draggable' : false }:
-                    data[i].isTarg ? { 'src': 'image/1_09.png', 'draggable': false}:
-                        { 'src': 'image/1_03.png', 'draggable': false};
-                tool.setAttr(img, attrVal);
-                node.appendChild(img);
-            }
-            tool.setAttr(node, {
-                'style' : 'width:' + 100/parseInt(def.hard) +'%',
+            var img = tool.createDom('img'),
+                attrVal = {};
+            attrVal = data[i].isTarg ? {
+                'src': 'image/1_09.png',
+                'draggable': false,
+                'style' : 'width: ' + 100/parseInt(def.hard) + '%',
                 'id': i
-            });
-            // tool.addClass(node, 'rotate360');
-            def.content.appendChild(node);
+            }: {
+                'src': 'image/1_03.png',
+                'draggable': false,
+                'style' : 'width: ' + 100/parseInt(def.hard) + '%',
+                'id': i
+            };
+            tool.setAttr(img, attrVal).addClass(img, 'rotate90');
+            def.content.appendChild(img);
+        }
+        this.flip();
+    };
 
+    proto.flip = function () {
+        var _this = this, child = _this.def.content.children;
+        for(i = 0; i < child.length; i++){
+            setTimeout(replaceAni(i), 2000);
+            setTimeout(replaceSrc(i), 2300);
+        }
+        function replaceAni(i) {
+            return function () {
+                tool.removeClass(child[i], 'rotate90').addClass(child[i], 'rotate180');
+            }
+        }
+        function replaceSrc(i) {
+            return function(){
+                tool.setAttr(child[i], {'src' : 'image/1_05.png'});
+                i || (_this.def.wait = false);//启动监听
+            }
         }
     };
-    proto.remove = function () {
+
+    proto.reset = function () {
         var _this = this;
-        tool.removeDom(_this.def.content);
+        _this.def.wait = true;
+        tool.cleanDom(_this.def.content);
         _this.init();
     };
-    //点击事件管理
-    proto.addEvent = function (data) {
-        var _this = this;
-        tool.addEvent(data.content, 'click', function (ev) {
+    proto.end = function () {
+        console.log('end');
+
+        // this.reset();
+    };
+    /**
+     * 点击事件处理
+     * @param _this
+     * @returns {Function}
+     */
+    ;function clickHandler(_this) {
+        function hand(ev) {
+            if(_this.def.wait) return;
             var e = ev || window.event;
             var t = e.target || e.srcElement;
+            var id = t.id, attrVal = {};
             if (t.nodeName.toLowerCase() === 'img') {
-                tool.addClass(t.parentNode, 'front');
-                setTimeout(function(){
-                   tool.setAttr(t.nextElementSibling, { 'style': 'z-index:2'});
-                },350);
+                tool.removeClass(t, 'rotate180').addClass(t, 'rotate180_c');
+                attrVal = _this.def.data[id].isTarg ? {'src': 'image/1_09.png'} : {'src': 'image/1_03.png'};
+                setTimeout(function () {
+                    tool.setAttr(t, attrVal);
+                }, 300);
             }
-            var id = t.parentNode.id;
-            _this.score(id);
-        });
+            _this.score(t.id);
+        };
+        return hand;
     };
+
 
     // 生成随机数
     proto.getRandom = function (h) {
@@ -142,7 +189,6 @@
     };
     return GameManager;
 });
-
 /**
  * 工具管理对象
  */
@@ -153,10 +199,13 @@ var tool = {
     createDom: function () {
         return document.createElement(arguments[0]);
     },
-    removeDom: function (ele) {
+    cleanDom: function (ele) {
         while (ele.hasChildNodes()){
             ele.removeChild(ele.lastChild)
         }
+    },
+    removeDom: function (ele, l) {
+        ele.removeChild(ele.children[l]);
     },
     setAttr: function (ele, targ) {
         //targ 为键值对参数，可以同时设置多个参数
@@ -164,7 +213,7 @@ var tool = {
         for (var i in targ){
             ele.setAttribute(i, targ[i]);
         }
-        return ele;
+        return this;
     },
     html: function () {
         //传入两条参数修改文本 一条参数获取文本
@@ -175,27 +224,35 @@ var tool = {
     },
     addClass: function (ele, targ) {
         this.hasClass(ele, targ) || (ele.className +=  ' ' + targ);
+        return this;
     },
     removeClass: function (ele, targ) {
         if(this.hasClass(ele, targ)) {
-            ele.className = ele.className.replace(new RegExp('(^|\\s)' + targ + '(\\s|$)'), ' ');
+            ele.className = ele.className.replace(new RegExp('(^|\\s)' + targ + '(\\s|$)'), '');
         }
+        return this;
     },
-    addEvent: function (ele, type, fn, cap) {
-        //cap是否冒泡
+    addAnimation: function (ele, targ) {
+        ele.style.animation = targ;
+        ele.style.webkitAnimation = targ;
+    },
+    addEvent: function (ele, type, fn, cap) {//cap是否冒泡
         if (ele.addEventListener){
             ele.addEventListener(type, fn, cap || false);
         }else if (ele.attachEvent){
             ele.attachEvent('on' + type, fn);
         }
     },
-    removeEVent: function (ele, type, fn) {
+    removeEvent: function (ele, type, fn) {
         if( ele.removeEventListener) {
             ele.removeEventListener(type, fn, false);
         }else if (ele.detachEvent){
             ele.detachEvent('on' + type, fn);
         }
-    }
+    },
+    delay: function (fn, t) {
+        setTimeout(fn, t);
+    },
 };
 
 new GameManager('content');

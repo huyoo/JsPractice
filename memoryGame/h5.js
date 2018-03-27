@@ -1,7 +1,7 @@
 'use strict';
 /**
- * 结束界面未完成
- * 重新开始游戏时的监听事件判定
+ * 结束界面待改进
+ * 本地存储保存近期成绩
  */
 (function (win, factory) {
     if (typeof define === 'function' && define.amd) {
@@ -16,17 +16,18 @@
     function GameManager() {
         this.version = '1.0';
         this.def = {
-            content: tool.getDom(arguments[0]),
+            content: tool.getDom('content'),
             menu : tool.getDom('title'),
             start : tool.getDom('start'),
             repeat: tool.getDom('repeat'),
             heart: tool.getDom('heart'),
-            level: 1,
-            data: null,
-            score: 0,
-            hard: 3,
+            level: 1,//关卡
+            data: null, //存放页面方块数据
+            score: 0, //得分
+            hard: 3, //难度
             curtain: 0,//当前没有被找出的方块
-            wait: true
+            wait: true,
+            first: true,
         };
         this.waiting();
     };
@@ -38,11 +39,35 @@
      */
     proto.waiting = function () {
         var _this = this;
-        tool.addEvent(_this.def.start, 'click', function () {
-            tool.setAttr(_this.def.start.parentNode, { 'style' : 'display: none'});
-            tool.setAttr(_this.def.start.parentNode.parentNode, { 'style' : 'display: none' });
-            _this.init();
-        })
+        this.def.level = 1;
+        this.def.score = 0;
+        this.def.hard = 3;
+        this.def.wait = true;
+        /***  剩余机会 ***/
+        for(i = 0; i < 3; i++){
+            var img = tool.createDom('img');
+            tool.setAttr(img, { 'src' : 'image/heart.png' });
+            this.def.heart.appendChild(img);
+        }
+
+
+        if(this.def.first) {
+            tool.addEvent(_this.def.start, 'click', function () {
+                tool.setAttr(_this.def.start.parentNode, {'style': 'display: none'});
+                tool.setAttr(_this.def.start.parentNode.parentNode, {'style': 'display: none'});
+                _this.init();
+            });
+            tool.addEvent(_this.def.repeat, 'click', function () {
+                tool.setAttr(_this.def.repeat.parentNode, {'style': 'display: none'});
+                tool.setAttr(_this.def.repeat.parentNode.parentNode, {'style': 'display: none'});
+                _this.init();
+            });
+
+        } else {
+            /** 黑幕展示 **/
+            tool.setAttr(this.def.repeat.parentNode, { 'style' : 'display: block'});
+            tool.setAttr(this.def.repeat.parentNode.parentNode, { 'style' : 'display: block' });
+        }
     };
     /**
      * 初始化游戏界面
@@ -52,7 +77,7 @@
         def.data = this.getRandom(def.hard);
         def.curtain = def.hard;
         this.create(def, def.data);
-        this.def.score || tool.addEvent(def.content, 'click', clickHandler(this));//添加监听
+        this.def.first && tool.addEvent(def.content, 'click', clickHandler(this));//添加监听
         this.score(def);
     };
 
@@ -73,8 +98,8 @@
                 var length = def.heart.children.length;
                 if (!length){
                     this.end();
-                };
-                tool.removeDom(def.heart, length - 1);
+                }else
+                    tool.removeDom(def.heart, length - 1);
             }
         }
         tool.html(tool.getDom('level'), def.level);
@@ -90,7 +115,8 @@
             ++ def.level;
             setTimeout(function () {
                 _this.reset();
-            }, 800);
+                _this.init();
+            }, 400);
         }
     };
     //创建内容
@@ -119,7 +145,7 @@
         var _this = this, child = _this.def.content.children;
         for(i = 0; i < child.length; i++){
             setTimeout(replaceAni(i), 2000);
-            setTimeout(replaceSrc(i), 2300);
+            setTimeout(replaceSrc(i), 2350);
         }
         function replaceAni(i) {
             return function () {
@@ -138,12 +164,16 @@
         var _this = this;
         _this.def.wait = true;
         tool.cleanDom(_this.def.content);
-        _this.init();
     };
+    /**
+     * 游戏结束
+     */
     proto.end = function () {
-        console.log('end');
-
-        // this.reset();
+        this.reset();
+        this.def.first = false;
+        tool.html(tool.getDom('result'), this.def.score);
+        tool.html(tool.getDom('best'), this.def.score);
+        this.waiting();
     };
     /**
      * 点击事件处理
@@ -255,4 +285,4 @@ var tool = {
     },
 };
 
-new GameManager('content');
+new GameManager();

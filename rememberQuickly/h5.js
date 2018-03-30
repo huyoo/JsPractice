@@ -1,7 +1,6 @@
 'use strict';
 /**
  * 结束界面待改进
- * 本地存储保存近期成绩
  */
 (function (win, factory) {
     if (typeof define === 'function' && define.amd) {
@@ -52,6 +51,7 @@
 
 
         if(this.def.first) {
+            tool.addEvent(this.def.content, 'click', clickHandler(this));//
             tool.addEvent(_this.def.start, 'click', function () {
                 tool.setAttr(_this.def.start.parentNode, {'style': 'display: none'});
                 tool.setAttr(_this.def.start.parentNode.parentNode, {'style': 'display: none'});
@@ -62,11 +62,15 @@
                 tool.setAttr(_this.def.repeat.parentNode.parentNode, {'style': 'display: none'});
                 _this.init();
             });
-
+            tool.addEvent(tool.getDom('record'), 'click', function () {
+                tool.setAttr(tool.getDom('recordList'), { 'style' : 'display: block'});
+                _this.showRecord();
+            })
         } else {
             /** 黑幕展示 **/
             tool.setAttr(this.def.repeat.parentNode, { 'style' : 'display: block'});
             tool.setAttr(this.def.repeat.parentNode.parentNode, { 'style' : 'display: block' });
+            tool.setAttr(tool.getDom('recordList'), { 'style': 'display: none'});
         }
     };
     /**
@@ -77,7 +81,6 @@
         def.data = this.getRandom(def.hard);
         def.curtain = def.hard;
         this.create(def, def.data);
-        this.def.first && tool.addEvent(def.content, 'click', clickHandler(this));//添加监听
         this.score(def);
     };
 
@@ -110,7 +113,7 @@
     proto.data = function () {
         var def = this.def, _this = this;
         if (!def.curtain){
-            if (def.hard === def.level)
+            if ((def.hard * (def.hard -1) / 2) === def.level)
                 ++def.hard;
             ++ def.level;
             setTimeout(function () {
@@ -171,9 +174,28 @@
     proto.end = function () {
         this.reset();
         this.def.first = false;
-        tool.html(tool.getDom('result'), this.def.score);
-        tool.html(tool.getDom('best'), this.def.score);
+        var record = JSON.parse(localStorage.getItem('record')) || [];
+        record.push(this.def.score);
+        record.sort(function (a, b) { return b - a;});
+        record.length === 11 && record.pop();
+        localStorage.setItem('record', JSON.stringify(record));
+        tool.html(tool.getDom('result'), this.def.score + '');
+        tool.html(tool.getDom('best'), record[0] + '');
         this.waiting();
+    };
+    /**
+     * 显示分数记录
+     */
+    proto.showRecord = function () {
+        var record = tool.getDom('recordList'),
+            arr = JSON.parse(localStorage.getItem('record')) || [],
+            li;
+        tool.cleanDom(record);
+        for(i = 0; i < arr.length; i++){
+            li = tool.createDom('li');
+            li.innerHTML = arr[i];
+            record.appendChild(li);
+        }
     };
     /**
      * 点击事件处理
@@ -262,10 +284,6 @@ var tool = {
         }
         return this;
     },
-    addAnimation: function (ele, targ) {
-        ele.style.animation = targ;
-        ele.style.webkitAnimation = targ;
-    },
     addEvent: function (ele, type, fn, cap) {//cap是否冒泡
         if (ele.addEventListener){
             ele.addEventListener(type, fn, cap || false);
@@ -279,9 +297,6 @@ var tool = {
         }else if (ele.detachEvent){
             ele.detachEvent('on' + type, fn);
         }
-    },
-    delay: function (fn, t) {
-        setTimeout(fn, t);
     },
 };
 

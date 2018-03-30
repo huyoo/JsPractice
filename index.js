@@ -1,3 +1,12 @@
+var i = 1;
+function a() {
+    var i = 2;
+    function aa() {
+        return i;
+    }
+    return aa;
+}
+a()();
 
 (function () {
     var date,
@@ -21,4 +30,6 @@
             targClass.replace('fa-plus','fa-minus') : targClass.replace('fa-minus','fa-plus');
         status.style.display = status.style.display === 'block'? 'none': 'block';
     };
+
 })();
+

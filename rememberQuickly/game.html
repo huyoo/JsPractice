@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>WeGame</title>
+    <title>Remember Quickly</title>
     <link rel="stylesheet" href="h5.css">
     <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.min.css">
 </head>
@@ -14,10 +14,10 @@
         第 <span id="level">--</span> 关
         得分: <span id="score">--</span>
         <br>
-        <span id="heart"></span>
+        <span id="heart" class="height_50 block"></span>
     </div>
     <div id="content" class="content container"></div>
-    <div class="curtain ">
+    <div class="curtain">
         <div class="center container">
             <p class="curtain_title">开始游戏</p>
             <i id="start" class="fa fa-play fa-3x" aria-hidden="true" title="开始游戏"></i>
@@ -26,8 +26,9 @@
             <p class="curtain_title">游戏结束</p>
             <p>得分: <span id="result" class="mag-right-20"></span> BEST: <span id="best"></span></p>
             <i id="repeat" class="fa fa-repeat fa-3x mag-right-20" aria-hidden="true" title="再来一局"></i>
-            <i class="fa fa-list fa-3x" aria-hidden="true" title="历史记录"></i>
+            <i id="record" class="fa fa-list fa-3x" aria-hidden="true" title="得分记录"></i>
         </div>
+        <ol class="center container hide mar_top_30" id="recordList"></ol>
     </div>
 <script src="h5.js"></script>
 </body>

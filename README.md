@@ -12,4 +12,4 @@
 * 每局游戏有3次失误的机会；
 * 需要注意的是，由于使用了localstorage存放游戏的最佳纪录，所以清除浏览器缓存会丢失得分数据，不过这个功能纯属鸡肋，不是吗:D
 ###### 预览
-![记忆小游戏](https://raw.githubusercontent.com/huyoo/JsPractice/master/static/image/RQDemostrate.gif)
+![记忆小游戏](https://raw.githubusercontent.com/huyoo/JsPractice/master/static/image/RQDemosrate.gif)

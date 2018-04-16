@@ -1,0 +1,294 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/basejs/base.css">
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .timeline_horizon .base{
+            display: inline-block;
+            position: relative;
+            box-sizing: border-box;
+            margin-left: 10px;
+            margin-top: 50px;
+            width: 190px;
+            border-top-style: solid;
+            border-top-width: 10px;
+            vertical-align: top;
+        }
+        .timeline_horizon .circle {
+            width:27px;
+            height: 27px;
+            border-radius: 50%;
+            position: absolute;
+            left: 46.55%;
+            top: -20px;
+            text-align: center;
+            line-height: 27px;
+        }
+        .timeline_horizon .base div:first-child {
+            color: #fff;
+            font-weight: bold;
+        }
+        .timeline_horizon .base div:last-child {
+            width: 100%;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #636363;
+            text-align: center;
+        }
+        .timeline_horizon .base div:last-child span {
+            display: block;
+            height: 24px;
+            line-height: 24px;
+            font-size: 14px;
+            color: #ababab;
+        }
+        .timeline_horizon .border_color_pass {
+            border-top-color: #9dbceb;
+        }
+        .timeline_horizon .border_color_wait {
+            border-top-color: #c6c6c6;
+        }
+        .timeline_horizon .border_color_oncheck {
+            border-top-color: #3671CF;
+        }
+        .timeline_horizon  .back_color_pass {
+            background-color: #9dbceb;
+        }
+        .timeline_horizon .back_color_wait {
+            background-color: #c6c6c6;
+        }
+        .timeline_horizon .back_color_oncheck {
+            background-color: #3671CF;
+        }
+
+
+        .timeline_vertical{
+            margin: 20px 0;
+        }
+        .timeline_vertical .base{
+            position: relative;
+            width: 700px;
+            margin: 0 auto;
+            font-size: 14px;
+            line-height: 20px;
+        }
+        .timeline_vertical .base div{
+            display: inline-block;
+            vertical-align: top;
+        }
+        .timeline_vertical .info_left{
+            width: 150px;
+        }
+        .timeline_vertical .info_left span {
+            display: block;
+            text-align: right;
+        }
+        .timeline_vertical .circle{
+            position: absolute;
+            left: 162px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #ababab;
+        }
+        .timeline_vertical .info_right{
+            width: 500px;
+            margin-left: 15px;
+            padding: 0 0 20px 15px;
+            border-left: #ababab solid 1px;
+        }
+        .timeline_vertical .info_right span{
+            color: #636363;
+            margin-right: 10px;
+        }
+        .timeline_vertical .info_right p6{
+            font-size: 15px;
+            line-height: 18px;
+            font-weight: bold;
+        }
+        .timeline_vertical .info_right p5{
+            font-size: 22px;
+            line-height: 22px;
+            font-weight: bold;
+        }
+        .timeline_vertical .base:last-child .info_right{
+            border: none;
+        }
+    </style>
+    <script type="text/javascript" src="../static/jquery.min.js"></script>
+    <script type="text/javascript">
+        function TimelineHorizon(){
+            var content = $("#" + arguments[0]),
+                arr = arguments[1];
+            this.createDom(content, arr);
+        }
+
+        TimelineHorizon.prototype = {
+            borderColor: function (){
+                var obj = {
+                    pass: "base border_color_pass",
+                    oncheck: "base border_color_oncheck",
+                    wait: "base border_color_wait",
+                    cancel: "base border_color_oncheck"
+                }
+                return obj[arguments[0]]|| obj.oncheck;
+            },
+            backColor: function (){
+                var obj = {
+                    pass: "circle back_color_pass",
+                    oncheck: "circle back_color_oncheck",
+                    wait: "circle back_color_wait",
+                    cancel: "circle back_color_oncheck"
+                }
+                return obj[arguments[0]] || obj.oncheck;
+            },
+            createDom: function(content, arr) {
+                var _this = this;
+                var width = content.width()/arr.length - 15;
+                content.addClass("timeline_horizon");
+                arr.map(function(value, i){
+                    content.append("<div></div>");
+                    var $div = content.find("div").eq(-1);
+                    $div.width(width).addClass(_this.borderColor(value.state));
+
+                    $divFirst = $div.append("<div></div>").find('div').eq(-1);
+                    $divFirst.addClass(_this.backColor(value.state));
+                    switch(value.state){
+                        case "pass":
+                            $div.find("div").eq(0).html("✔");
+                            break;
+                        case "oncheck":
+                            $div.find("div").eq(0).html("✔");
+                            break;
+                        case "cancel":
+                            $div.find("div").eq(0).html("×");
+                            break;
+                        default:
+                            $div.find("div").eq(0).html(i + 1);
+                    }
+
+                    $divSec = $div.append("<div></div>").find("div").eq(-1);
+                    $divSec.append("<p6></p6>").find("p6").html(value.stage);
+                    $divSec.append("<span></span>").find("span").html(value.date);
+                });
+            },
+            create: function(content, arr) {
+                var a = content.find("div");
+            }
+        }
+
+        $(document).ready(function(){
+            var data = [{
+                state: "pass",
+                stage: "公布",
+                date: '2018-01-30'
+            },{
+                state: 'oncheck',
+                stage: '受理',
+                date: '2018-02-03'
+            },{
+                state: 'checkover',
+                stage: '放款',
+                date: '2018-02-04'
+            },{
+                state: 'cancel',
+                stage: '受理',
+                date: '2018-02-03'
+            },{
+                state: 'wait',
+                stage: '放款',
+                date: '2018-02-04'
+            }]
+            var timelineHorizon  = new TimelineHorizon("timeline_horizon", data);
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+            function TimelineVertical (){
+            }
+            TimelineVertical.prototype = {
+            }
+        })
+    </script>
+</head>
+<body>
+<div id="timeline_horizon"></div>
+
+<div class="timeline_horizon">
+    <div class="base border_color_pass">
+        <div class="circle back_color_pass">✔</div>
+        <div>
+            <p6>发布</p6>
+            <span>2018-02-04</span>
+        </div>
+    </div>
+    <div class="base border_color_oncheck">
+        <div class="circle back_color_oncheck"></div>
+        <div>
+            <p6>发布</p6>
+            <span>2018-02-04</span>
+            <span>耗时:1天23小时0分</span>
+        </div>
+    </div>
+    <div class="base border_color_wait">
+        <div class="circle back_color_wait">4</div>
+        <div>
+            <p6>发布</p6>
+            <span>2018-02-04</span>
+            <span>耗时:1天23小时0分</span>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="timeline_vertical">
+    <div class="base">
+        <div class="info_left">
+            <span>放贷结束</span>
+            <span>2018-02-04</span>
+        </div>
+        <div class="circle"></div>
+        <div class="info_right">
+            <p6>放贷: 20万</p6>
+            <br>
+            <span>贷款借据号：6555832442456</span>
+            <span>贷款合同号：587945123654</span>
+        </div>
+    </div>
+    <div class="base">
+        <div class="info_left">
+            <span>2018-02-04</span>
+        </div>
+        <div class="circle"></div>
+        <div class="info_right">
+            <p6>放贷: 20万</p6>
+            <br>
+            <span>贷款借据号：6555832442456</span>
+            <span>贷款合同号：587945123654</span>
+        </div>
+    </div>
+    <div class="base">
+        <div class="info_left">
+            <span>放款合计</span>
+        </div>
+        <div class="circle"></div>
+        <div class="info_right">
+            <p5>100万</p5>
+            <br>
+            <span>审批金额：100万</span>
+            <span>利率：7.7%</span>
+            <br>
+            <span>审批金额：100万</span>
+            <span>利率：7.7%</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -12,10 +12,9 @@
         .timeline_horizon .base{
             display: inline-block;
             position: relative;
-            box-sizing: border-box;
-            margin-left: 10px;
+            box-sizing: content-box;
+            /* margin-left: 10px; */
             margin-top: 50px;
-            width: 190px;
             border-top-style: solid;
             border-top-width: 10px;
             vertical-align: top;
@@ -171,88 +170,113 @@
             border-left: 7.2654252px  solid #c1272d ;
             border-bottom: 10px solid transparent;
         }
-
+        .date_field {
+            margin: 30px 40px;
+        }
+        .date_field div {
+            display: inline-block;
+            border: 1px #C4CFD5 solid;
+        }
+        .date_field input {
+            border: none;
+            outline: none;
+            font-size: 14px;
+            color: #101010;
+            padding: 5px;
+        }
+        .date_field i {
+            background: url("../static/image/trigger-date.png") no-repeat;
+            vertical-align: middle;
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+        }
     </style>
     <script type="text/javascript" src="../static/jquery.min.js"></script>
     <script type="text/javascript">
-        function TimelineHorizon(data){
+    ;(function(){
+        //边框样式
+        function getBorderStyle(){
+            var obj = {
+                pass: "base border_color_pass",
+                oncheck: "base border_color_oncheck",
+                wait: "base border_color_wait"
+            }
+            return obj[arguments[0]]|| obj.oncheck;
+        };
+        //背景样式
+        function getBgStyle(){
+            var obj = {
+                pass: "circle back_color_pass",
+                oncheck: "circle back_color_oncheck",
+                wait: "circle back_color_wait"
+            }
+            return obj[arguments[0]] || obj.oncheck;
+        };
+        //圆框内文字
+        function getWord(){
+            var obj = {
+                pass: "✔",
+                oncheck: "✔",
+                cancel: "×"
+            }
+            return obj[arguments[0]] || null;
+        }
+
+        var TimelineHorizon = function(data){
             this.init(data);
             this.setDate(data);
         }
+        var proto = TimelineHorizon.prototype;
 
-        TimelineHorizon.prototype = {
-            init: function(arr){
-                var _this = this, content = $(".timeline_horizon");
-                var width = content.width()/arr.length - 15;
-                
-                arr.map(function(value, i){
-                    var $div = content.children("div").eq(i);
-                    $div.width(width).addClass(_this.borderColor(value.state));
-                    $div = $div.children("div").eq(0);
-                    $div.addClass(_this.backColor(value.state));
-                    switch(value.state){
-                        case "pass":
-                            $div.html("✔");
-                            break;
-                        case "oncheck":
-                            $div.html("✔");
-                            break;
-                        case "cancel":
-                            $div.html("×");
-                            break;
-                        default:
-                            $div.html(i + 1);
-                    }
-                });
-            },
-            setDate: function(arr){
-                var $div = $(".timeline_horizon > div > div:last-child");
-                arr.map(function(value, i){
-                    if(value.date){
-                        $div.eq(i).find("span").html(value.date);
-                    }
-                    if(i && value.date){
-                        $div.eq(i).append("<span></span>").find("span").eq(-1).html("11")
-                    }
-                });
-            },
-            borderColor: function (){
-                var obj = {
-                    pass: "base border_color_pass",
-                    oncheck: "base border_color_oncheck",
-                    wait: "base border_color_wait"
-                }
-                return obj[arguments[0]]|| obj.oncheck;
-            },
-            backColor: function (){
-                var obj = {
-                    pass: "circle back_color_pass",
-                    oncheck: "circle back_color_oncheck",
-                    wait: "circle back_color_wait"
-                }
-                return obj[arguments[0]] || obj.oncheck;
-            },
+        proto.init = function(arr){
+            var _this = this, content = $(".timeline_horizon");
+            var width = 100 / arr.length -1 + "%";
+            
+            arr.map(function(value, i){
+                var $div = content.children("div").eq(i);
+                $div.width(width).addClass(getBorderStyle(value.state));
+                $div = $div.children("div").eq(0);
+                $div.addClass(getBgStyle(value.state));
+                var str = getWord(value.state) || (i + 1);
+                $div.html(str);
+            });
         };
+        proto.setDate = function(arr){
+            var $div = $(".timeline_horizon > div > div:last-child");
+            arr.map(function(value, i){
+                if(value.date){
+                    $div.eq(i).find("span").html(value.date);
+                }
+                if(i && value.date){
+                    $div.eq(i).append("<span></span>").find("span").eq(-1).html("11")
+                }
+            });
+        };
+        
+        window.TimelineHorizon = TimelineHorizon;
+    })(window);
 
-        $(document).ready(function(){
-            var data = [{
-                state: "pass",
-                date: '2018-01-30'
-            },{
-                state: 'oncheck',
-                date: '2018-02-03'
-            },{
-                state: 'checkover',
-                date: '2018-02-04'
-            },{
-                state: 'cancel',
-                date: '2018-02-03'
-            },{
-                state: 'wait',
-                date: ''
-            }]
-            var timelineHorizon  = new TimelineHorizon(data);
-        })
+    $(document).ready(function(){
+        var data = [{
+            state: "pass",
+            date: '2018-01-30'
+        },{
+            state: 'oncheck',
+            date: '2018-02-03'
+        },{
+            state: 'checkover',
+            date: '2018-02-04'
+        },{
+            state: 'cancel',
+            date: '2018-02-03'
+        },{
+            state: 'wait',
+            date: ''
+        }]
+
+        var timelineHorizon  = new TimelineHorizon(data);
+    })
     </script>
     <script>
         function TimelineVertical (data){
@@ -276,6 +300,30 @@
             }];
             var timelineVertical = new TimelineVertical(data);
         })
+    </script>
+    <script>
+        function DateField(data){
+            var data = data;
+            this.init(data);
+        }
+        var proto = DateField.prototype;
+        proto.init = function (){
+            $(".date_field > div").eq(-1);
+        };
+        proto.bind = function(data){
+            var _this = this;
+            $(".date_field > div > i").on(data.type || "click", function(){
+                _this.init();
+            });
+        }
+        $(document).ready(function () {
+            var data = {
+                type: "click", // 默认值为click
+            };
+
+            var dateField = new DateField(data);
+        });
+        
     </script>
 </head>
 <body>
@@ -372,7 +420,7 @@
     </div>
 </div>
 
-<div class="timeline_vertical">
+<!-- <div class="timeline_vertical">
     <div class="">
         <div class="info_left">
         </div>
@@ -424,6 +472,13 @@
             <div>审批金额：<span>100万</span></div>
             <div>利率：<span>7.7%</span></div>
         </div>
+    </div>
+</div> -->
+
+<div class="date_field">
+    <div >
+        <input type="text">
+        <i></i>
     </div>
 </div>
 

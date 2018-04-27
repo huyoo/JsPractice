@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/basejs/base.css">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .input {
+            display: inline-block;
+            width: 200px;
+            height: 40px;
+            margin: 10px;
+            border: 1px solid #C4CFD5;
+            font-size: 17px;
+            color: #000;
+            vertical-align: top;
+        }
+        .select_field{
+            height: 100%;
+        }
+        .select_field input {
+            padding-left: 5px;
+            width: 87%;
+            height: 100%;
+            box-sizing: content-box;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+        .select_field p{
+            display: inline-block;
+            transform: rotate(90deg);
+            border-left: #C4CFD5 6.92820px solid;
+            border-top: transparent 4px solid;
+            border-bottom: transparent 4px solid;
+        }
+        .select_field div:first-child{
+            height: 100%;
+        }
+        .select_field div:last-child{
+            display: none;
+            position: relative;
+            z-index: 99;
+            left: -1px;
+            width: 100%;
+            border: solid 1px #C4CFD5;
+            background-color: white;
+        }
+        .select_field span{
+            display: block;
+            width: 100%;
+            padding: 0 3px;
+        }
+    </style>
+</head>
+<body>
+    <form action="" style="margin: 20px;">
+        <div>
+            <div class="input">
+                <div id="cc" class="select_field">
+                    <div>
+                        <input type="text" readonly placeholder="类型选择">
+                        <p></p>
+                    </div>
+                    <div></div>
+                </div>
+            </div>
+            <div class="input">
+                <div id="aa" class="select_field">
+                    <div>
+                        <input type="text" readonly placeholder="类型选择">
+                        <p></p>
+                    </div>
+                    <div></div>
+                </div>
+            </div>
+            <div class="input">
+                <input type="text">
+            </div>
+        </div>
+        <textarea name="" id="" cols="60" rows="20"></textarea>
+    </form>
+    
+
+    <script type="text/javascript" src="../static/jquery.min.js"></script>
+    <script type="text/javascript">
+    ;(function(){
+        var arr = [];
+        var SelectField = function(opt){
+            this.type = opt.type;
+            this.prams = opt.prams;
+
+            if(opt.id){
+                this.id = "#" + opt.id;
+                $(this.id).addClass(".select_field");
+            } else{
+                this.id = ".select_field";
+            }
+            this.select();
+            this.leave();
+        }
+
+        var proto = SelectField.prototype;
+        //显示调用
+        proto.show = function(){
+            var _this = this,
+                type = _this.type;
+            $(_this.id).find("input").on("click", function(target){
+                target.stopPropagation();
+                if( !type || type === "create" ){
+                    _this.init();
+                } else if(type === "post" || type === "get"){
+                    _this.ajax();
+                } else{
+                    throw "type is not in create/post/get";
+                }
+            });
+        };
+        //dom生成
+        proto.init = function(){
+            var _this = this, 
+                content = $(_this.id).children().eq(-1),
+                prams = _this.prams;
+            if(content.css("display") === "block")
+                return;
+            for(var i in prams){
+                arr.push(i);
+                content.append("<span>" + prams[i] + "</span>");
+            }
+            content.css("display", "block");
+        };
+        //后台获取参数
+        proto.ajax = function (){
+            var _this = this;
+            $.ajax({
+                type: _this.type,
+                url: "select/aa",
+                data: _this.prams,
+                dataType: "json",
+                async: false,
+                success: function(data){
+                    _this.prams = JSON.stringify(data)
+                    _this.init();
+                },
+                error: function(){
+                    throw "获取数据失败,请重试";
+                }
+            });
+        };
+        //选中填值
+        proto.select = function(){
+            var _this = this,
+                prams = _this.prams,
+                content = $(_this.id).find("div").eq(-1);
+            content.on("click", function(target){
+                target.stopPropagation();
+                var i = $(this).children().index(target.target);
+                $(_this.id).find("input").attr("data-select", arr[i]).val(prams[arr[i]]);
+                $(this).attr("style", "");
+                $(this).children().remove();
+            });
+        };
+        //点击外部隐藏下拉列表
+        proto.leave = function(){
+            var content = $(this.id).find("div").eq(-1);
+            $(document).on("click", function(){
+                content.attr("style", "").children().remove();
+            })
+        }
+        window.SelectField = SelectField;
+    })(window);
+        
+    $(document).ready(function(){
+        
+        var data = {
+            id: "cc",
+            type: "create", //获取路径，为null/create时直接生成, post/get 从后台获取数据
+            prams: {// 直接升成时作为选项键值对, 从后台获取数据时作为查询参数
+                id: "1", 
+                val: "2",
+            },
+        }
+        var data2 = {
+            id: "aa",
+            prams: {
+                id: "2321",
+                val: "23",
+                text: "text"
+            },
+        }
+        var select = new SelectField(data).show();
+        var select2 = new SelectField(data2).show();
+
+        console.log($("#aa").find("input").attr("data-value"));
+    })
+        
+    </script>
+</body>
+</html>

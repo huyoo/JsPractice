@@ -7,14 +7,8 @@ define(["jquery"], function ($) {
         this.type = opt.type;
         this.prams = opt.prams;
 
-        if(opt.id){
-            this.id = "#" + opt.id;
-            $(this.id).addClass(".select_field");
-        } else{
-            this.id = ".select_field";
-        }
-        this.select();
-        this.leave();
+        this.id = opt.id ? "#" + opt.id : ".select_field";
+        this.addEvent();
     };
 
     var proto = SelectField.prototype;
@@ -22,8 +16,8 @@ define(["jquery"], function ($) {
     proto.show = function(){
         var _this = this,
             type = _this.type;
-        $(_this.id).find("input").on("click", function(target){
-            target.stopPropagation();
+        $(_this.id).find('input').on("click", function(ev){
+            ev.stopPropagation();
             if( !type || type === "create" ){
                 _this.init();
             } else if(type === "post" || type === "get"){
@@ -36,10 +30,11 @@ define(["jquery"], function ($) {
     //dom生成
     proto.init = function(){
         var _this = this,
-            content = $(_this.id).children().eq(-1),
+            content = $(_this.id).children().children().eq(-1),
             prams = _this.prams;
         if(content.css("display") === "block")
             return;
+        arr.length = 0;
         for(var i in prams){
             arr.push(i);
             content.append("<span>" + prams[i] + "</span>");
@@ -51,12 +46,12 @@ define(["jquery"], function ($) {
         var _this = this;
         $.ajax({
             type: _this.type,
-            url: "select/aa",
+            url: "select/data.json",
             data: _this.prams,
             dataType: "json",
             async: false,
             success: function(data){
-                _this.prams = JSON.stringify(data)
+                _this.prams = data[0];
                 _this.init();
             },
             error: function(){
@@ -64,30 +59,32 @@ define(["jquery"], function ($) {
             }
         });
     };
-    //选中填值
-    proto.select = function(){
+    // 添加事件
+    proto.addEvent = function () {
         var _this = this,
-            prams = _this.prams,
             content = $(_this.id).find("div").eq(-1);
-        content.on("click", function(target){
-            target.stopPropagation();
-            var i = $(this).children().index(target.target);
-            $(_this.id).find("input").attr("data-select", arr[i]).val(prams[arr[i]]);
-            $(this).attr("style", "");
-            $(this).children().remove();
-        });
-    };
-    //点击外部隐藏下拉列表
-    proto.leave = function(){
-        var content = $(this.id).find("div").eq(-1);
-        $(document).on("click", function(){
+
+        content.on("click", selectHandler);
+        $(document).on("click", listHide);
+        
+        function listHide() {
             content.attr("style", "").children().remove();
-        })
+        }
+
+        function selectHandler(ev){
+            ev.stopPropagation();
+            var i = $(this).children().index(ev.target);
+            $(this).parent()
+                .find("input")
+                .attr("data-select", arr[i])
+                .val(_this.prams[arr[i]]);
+            $(this).attr("style", "")
+                .children()
+                .remove();
+        }
     };
 
-    return {
-        init : function () {
-            return new SelectField(arguments[0]);
-        }
+    return function(){
+        return new SelectField(arguments[0]);
     }
 });

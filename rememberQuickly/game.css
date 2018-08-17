@@ -13,6 +13,32 @@ textarea{
 ul {
     list-style: none;
 }
+
+.bg{
+    background-color: #1c2b36;
+}
+
+.block_white {
+    background-color: white;
+}
+.block_red {
+    background-color: #c36;
+}
+.block_grey {
+    background-color: #d1d1d1;
+}
+.main{
+    background-color: #eeeeee;
+}
+
+.main span{
+    display: inline-block;
+    width: 33px;
+    height: 33px;
+    background-color: white;
+    border-radius: 5px;
+}
+
 .title{
     margin-top: 5%;
     text-align: center;

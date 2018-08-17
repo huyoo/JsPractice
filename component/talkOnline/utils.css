@@ -1,0 +1,295 @@
+/**以下是分页控件样式*/
+.page_control{
+    display:inline-block;
+    margin-left: 2px;
+    width:16px;  
+    height:16px;
+    text-align: center;
+    font:11px Arial,Verdana,sans-serif;
+    line-height:16px;
+    background: #fff;
+    border:1px solid #bbbbbb;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #949294;
+    text-decoration: none;
+  }
+  .page_control_click{
+    color: #C1272D;
+  }
+  .firstOrLast{
+      position: relative;
+      color: #fff;
+      top:5px;
+  }
+  .first{
+      width: 0px;
+      height: 0px;
+      border:5px solid #000;
+      border-color: transparent #000 transparent transparent;
+      position: absolute;
+      left:0px;
+      top:3px;
+  }
+  .last{
+    width: 0px;
+    height: 0px;
+    border:5px solid #000;
+    border-color: transparent transparent transparent #000;
+    position: absolute;
+    top:3px;
+    left:6px;
+}
+/**以下是表格样式**/
+.table{
+    *border-collapse:collapse;
+     border-spacing: 0;
+     width: 100%;
+     margin: 0;
+     padding: 0;
+     word-wrap: break-word; 
+     word-break: break-all
+}
+.table tr{
+    width: 100%;
+    position: relative;
+}
+.table tr:before{
+    width: 0px;
+    height: 0px;
+    border:5px solid #000;
+    border-color: transparent transparent transparent #000;
+    position: absolute;
+    top:3px;
+    left:6px;
+}
+.table tbody td,.table thead td{
+    padding: 3px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+    height: 20px;
+    line-height: 26px;
+    font-size:12px;
+    font-style: normal;
+    opacity: 1;
+    color: #101010;
+    font-family: Microsoft YaHei
+}
+.table tbody td:nth-child(odd){
+    padding-left: 20px;
+    position: relative;
+}
+.table tbody tr:hover,.table tbody tr:active{
+    background-color: #e0e0e0;
+    color: #d1d1d1;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+/******************tab页样式**/
+.tab li{
+    list-style: none;
+    display: inline-block;
+}
+.tab .tab-nav{
+    height: 30px;
+    text-align: center;
+    text-align:left;
+    border-bottom: 1px solid #dbdbdb;
+    padding-left: 10px;
+
+}
+.tab .tab-nav li{
+width: 107px;
+height: 28px;
+line-height: 28px;
+border-radius: 3px 3px 0px 0px;
+background-color: rgba(239, 248, 255, 1);
+color: rgba(16, 16, 16, 1);
+text-align: center;
+font-family: Roboto;
+border: 1px solid #dbdbdb;
+border-bottom: none;
+margin-left: 5px;
+font-weight:normal;
+}
+.liClass{
+    width:80px;
+    font-size: 12px;
+}
+.tab .tab-nav li.actived{
+    background: #fff;
+    color: #0D0D0D;
+    font-size: 14px;
+    /*font-family: 1200;*/
+    border-bottom: #fff;
+    font-weight:bold;
+    /*opacity: 50%;*/
+}
+.tab .content-wrap{
+	background: #ffffff;
+    padding: 5px;
+    min-height: 550px;
+}
+.tab .content-wrap .content-item{
+	min-width: 830px;
+	position: absolute;
+    min-height: 550px;
+    display: none;
+}
+.tab .content-wrap .current{
+    display: block;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+/****************时间控件***************************/
+@font-face {font-family: "iconfont";
+    src: url('//at.alicdn.com/t/font_234130_nem7eskcrkpdgqfr.eot?t=1505291076294'); /* IE9*/
+    src: url('//at.alicdn.com/t/font_234130_nem7eskcrkpdgqfr.eot?t=1505291076294#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('data:application/x-font-woff;charset=utf-8;base64,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') format('woff'),
+    url('//at.alicdn.com/t/font_234130_nem7eskcrkpdgqfr.ttf?t=1505291076294') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    url('//at.alicdn.com/t/font_234130_nem7eskcrkpdgqfr.svg?t=1505291076294#iconfont') format('svg'); /* iOS 4.1- */
+  }
+  
+  .iconfont {
+    font-family:"iconfont" !important;
+    font-size:16px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon-115rightarrowheads:before { content: "\e79b"; }
+  
+  .icon-111arrowheadright:before { content: "\e6db"; }
+  
+  .icon-116leftarrowheads:before { content: "\e807"; }
+  
+  .icon-112leftarrowhead:before { content: "\e6f6"; }
+  
+ul{
+    list-style: none;
+}
+#schedule-box{
+    font-size: 12px;
+    position: absolute;
+    display: none;
+}
+.schedule-hd{
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+.today{
+    flex: 1;
+    text-align: center;
+}
+.ul-box{
+    overflow: hidden;
+}
+.ul-box > li{
+    float: left;
+    width: 14.28%;
+    text-align: center;
+}
+.other-month{
+    color: #999999;
+}
+.current-month{
+    color: #333333;
+}
+.today-style{
+    border-radius: 50%;
+    background: #58d321;
+}
+.arrow{
+    cursor: pointer;
+}
+.dayStyle{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+.current-month > .dayStyle:hover{
+    background: #00BDFF;
+    color: #ffffff;
+}
+.today-flag{
+    background: #00C2B1;
+    color: #fff;
+}
+.boxshaw{
+    background: #fff;
+    box-shadow: 2px 2px 15px 2px #e3e3e3;
+    z-index: 999;
+}
+.selected-style {
+    background: #00BDFF;
+    color: #ffffff;
+}
+/***************************横向时间轴***********************************/
+.time_line {
+    width:192px;
+    display: inline-block;
+    position: relative;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    list-style:none outside none;
+
+}
+.time_line .circle {
+    width:26px;
+    height: 26px;
+    border-radius: 45%;
+    position: absolute;
+    left:81px;
+    top:-17px;
+    text-align: center;
+    line-height: 24px;
+    color:#fff;
+    font-size: 16px;
+    font-family: arial;
+    font-weight: bold;
+}
+.time_line .circle:after{
+    clear: both;
+}
+.time_line_pass{
+    border-top:6px solid #a6bde0;
+    color:#636363;
+    font-size: 12px;
+}
+.time_line_pass>div:first-child {
+    background: #a6bde0;
+}
+.time_line_current{
+    border-top:6px solid #3571cF;
+    color:#010101;
+    font-size: 12px;
+}
+.time_line_current>div:first-child {
+    background: #3571cF;
+}
+.time_line_after{
+    border-top:6px solid #c6c6c6;
+    color:#ababab;
+    font-size: 12px;
+}
+.time_line_after>div:first-child {
+    background: #c6c6c6;
+}
+.time_line_pass>div:nth-child(2),.time_line_current>div:nth-child(2),.time_line_after>div:nth-child(2){
+    position:absolute;
+    margin-top:25px;
+    width: 100%;
+    text-align: center;
+}
+

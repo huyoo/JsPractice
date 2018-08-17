@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>在线洽谈</title>
+    <link rel="stylesheet" type="text/css" href="utils.css">
+    <link rel="stylesheet" type="text/css" href="talkOnline.css">
+</head>
+<body>
+<div class="ask_online">
+    <div class="ent_list" data-title="entName">
+        <div class="content">暂无洽谈记录</div>
+        <div class="slider hide">
+            <div></div>
+        </div>
+    </div>
+    <div class="talk_view">
+        <div class="head bg_blue"><span data-title = 'entName'>----</span></div>
+        <div class="main">
+            <div class="now full_view">
+                <div class="new_msg">
+                    <div class="content"></div>
+                    <div class="slider hide">
+                        <div></div>
+                    </div>
+                </div>
+                <div class="input">
+                    <textarea class="input_area" id=""></textarea>
+                </div>
+                <div>
+                    <span class="bg_blue btn_submit" title="发送">发送</span>
+                    <span class="btn btn_history" title="历史消息"></span>
+                </div>
+            </div>
+            <div class="history half_view hide">
+                <div class="bg_grey history_title">
+                    <span>历史消息</span>
+                    <span class="btn btn_close" title="关闭"></span>
+                </div>
+                <div class="history_msg">
+                    <div class="content"></div>
+                    <div class="slider hide">
+                        <div></div>
+                    </div>
+                </div>
+                <div class="bg_grey bottom">
+                    <span class="btn btn_search" title="查询"></span>
+                    <span class="search_box hide">
+                        <input class="search_input" type="text">
+                        <span title="查询"></span>
+                    </span>
+                    <span class="btn btn_latest" title="末页"></span>
+                    <span class="btn btn_next" title="下一页"></span>
+                    <span class="btn btn_last" title="上一页"></span>
+                    <span class="btn btn_lastest" title="首页"></span>
+                    <span class="btn btn_calendar" title="日历"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id='schedule-box' class="boxshaw"></div>
+</div>
+<script type="text/javascript" src="../../lib/jquery.min.js"></script>
+<script type="text/javascript" src="scroll.js"></script>
+<script type="text/javascript" src="time.js"></script>
+<script type="text/javascript" src="talkOnline.js"></script>
+</body>
+</html>

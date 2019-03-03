@@ -6,23 +6,28 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Remember Quickly</title>
-    <link rel="stylesheet" href="game.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-<div class="level">
-    <span id="level">-</span>
-</div>
-<div id="content" class="main">
-    <span class="block_grey"></span>
-    <span></span>
-    <span></span>
-    <span></span>
-</div>
-<div class="score">
-    <span id="score">--</span>
-    <br>
-    <span id="heart" class="height_50 block"></span>
-</div>
-<script src="../lib/require.js" data-main="index"></script>
+    <div class="main">
+        <div class="content">
+            <span class="block_grey"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="left">
+            第
+            <span data-title="level">0</span>
+            关
+        </div>
+        <div class="right">
+            <span data-title="score">--</span>
+            <br>
+            <span data-title="heart" class="height_50 block"></span>
+        </div>
+    </div>
+<script src="https://cdn.bootcss.com/require.js/2.3.5/require.js" data-main="index"></script>
 </body>
 </html>

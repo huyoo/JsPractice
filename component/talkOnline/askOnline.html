@@ -5,13 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>在线洽谈</title>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="askOnline.css">
+    <link rel="stylesheet" href="combo.select.css">
 </head>
 <body>
 <div class="ask_online">
     <div class="ent_list" data-title="entName">
+        
         <div class="content">
+            <div class="add_talker">
+                <i class="fa fa-plus "></i>
+                <span class="name" data-title="addTalker">添加新对话</span>
+            </div>
             <div class="bg_blue" id="1121212212">
+                <span class="name" data-title="公司1">公司1</span>
+                <span class=""></span>
+            </div>
+            <div id="112112">
+                <span class="name" data-title="四川至善网络科技有限公司">四川至善网络科技有限公司</span>
+                <span class="red_dot"></span>
+            </div>
+            <div id="11212212">
+                <span class="name" data-title="四川至善网络阿萨飒飒是科技有限公司">四川至善网络阿萨飒飒是科技有限公司</span>
+                <span class="red_dot"></span>
+            </div>
+            <div id="1121212212">
+                <span class="name" data-title="公司1">公司1</span>
+                <span class=""></span>
+            </div>
+            <div id="112112">
+                <span class="name" data-title="四川至善网络科技有限公司">四川至善网络科技有限公司</span>
+                <span class="red_dot"></span>
+            </div>
+            <div id="11212212">
+                <span class="name" data-title="四川至善网络阿萨飒飒是科技有限公司">四川至善网络阿萨飒飒是科技有限公司</span>
+                <span class="red_dot"></span>
+            </div>
+            <div  id="1121212212">
+                <span class="name" data-title="公司1">公司1</span>
+                <span class=""></span>
+            </div>
+            <div id="112112">
+                <span class="name" data-title="四川至善网络科技有限公司">四川至善网络科技有限公司</span>
+                <span class="red_dot"></span>
+            </div>
+            <div id="11212212">
+                <span class="name" data-title="四川至善网络阿萨飒飒是科技有限公司">四川至善网络阿萨飒飒是科技有限公司</span>
+                <span class="red_dot"></span>
+            </div>
+            <div id="1121212212">
+                <span class="name" data-title="公司1">公司1</span>
+                <span class=""></span>
+            </div>
+            <div id="112112">
+                <span class="name" data-title="四川至善网络科技有限公司">四川至善网络科技有限公司</span>
+                <span class="red_dot"></span>
+            </div>
+            <div id="11212212">
+                <span class="name" data-title="四川至善网络阿萨飒飒是科技有限公司">四川至善网络阿萨飒飒是科技有限公司</span>
+                <span class="red_dot"></span>
+            </div>
+            <div id="1121212212">
+                <span class="name" data-title="公司1">公司1</span>
+                <span class=""></span>
+            </div>
+            <div id="112112">
+                <span class="name" data-title="四川至善网络科技有限公司">四川至善网络科技有限公司</span>
+                <span class="red_dot"></span>
+            </div>
+            <div id="11212212">
+                <span class="name" data-title="四川至善网络阿萨飒飒是科技有限公司">四川至善网络阿萨飒飒是科技有限公司</span>
+                <span class="red_dot"></span>
+            </div>
+            <div id="1121212212">
                 <span class="name" data-title="公司1">公司1</span>
                 <span class=""></span>
             </div>
@@ -28,6 +95,7 @@
             <div></div>
         </div>
     </div>
+    
     <div class="talk_view">
         <div class="head bg_blue"><span data-title = 'entName'>四川至善网络科技有限公司</span></div>
         <div class="main">
@@ -99,8 +167,18 @@
             </div>
         </div>
     </div>
+    <div class="select">
+        <div class="title">查找联系人</div>
+        <select class="list" name="enterprsie_list" id=""></select>
+        <div>
+            <span class="add_chat btn bg_blue">确定</span>
+            <span class="cancel btn">取消</span>
+        </div>
+    </div>
+    <div  class="back"></div>
 </div>
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="jquery.combo.select.js"></script>
 <script src="askOnline.js"></script>
 <script>
 function sub_curry(fn) {

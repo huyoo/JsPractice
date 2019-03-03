@@ -318,10 +318,65 @@
             t = $(ev.target);
         }
         name = t.attr("data-title");
+        if(name === 'addTalker'){
+            likeChatter();
+            $(".select, .back").show();
+            return;
+        }
+        
         $("span[data-title='entName']").html(name);
         $(".ent_list .content> div").removeClass("bg_blue");
         t.parent().addClass("bg_blue");
     });
+
+    $(".select .cancel").on("click", function(){
+        $(".select, .back").hide();
+        // var html = "  <option value='11'>test1</option>"+
+        // "<option value='12'>ytest2</option>";
+        // $('.select select').html(html)
+        // $('.select select').comboSelect();
+        
+    });
+    $(".select .add_chat").on("click", function(){
+        var data = {
+            id: $(".select select").val(),
+            name: $(".select input").val()
+        };
+        if(!$(".select select").val()){
+            return;
+        }
+        var chat = $(".ent_list .content").children("div[data-title='"+ $(".select select").val() +"']");
+        if(chat){
+            chat.remove();
+        }
+        $(".add_talker").after("<div data-title='"+ data.id +"' title='"+ data.name +"'>" +
+            "<span class='name' data-title='"+ data.name +"'>" +data.name+"</span><span></span>" +
+            "</div>");
+        $(".select, .back").hide();
+        $(".ent_list .content div:eq(1)").trigger("click");
+    });
+    function addChatHandle(){
+        $(".select, .back").hide();
+    }
+    function likeChatter(){
+        $.ajax({
+            url: "http://10.4.208.88/smefp-fm-web/talkOnline/getChatterList",
+            async: false,
+            data: {
+                name: "绵阳",
+                type: '1'
+            },
+            success: function(re){
+                var html = '';
+                re.map(function(item){
+                    html += "<option value='"+ item.bankId +"'>"+ item.bankName +"</option>"
+                })
+
+                $('.select select').html(html).comboSelect();
+            }
+        })
+    };
+
     // 
     $(".search_box > span").on("click", function(ev){
         $(".search_box").parent().children().map(function(i){
